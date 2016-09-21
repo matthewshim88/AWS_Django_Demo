@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    {% load staticfiles %}
+    <link rel='stylesheet' href="{%static 'restful_route/css/bootstrap.min.css' %}" media="screen" title="bootstrap" charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <div class="container bg-info">
+      <h2>Products</h2>
+      <table class="table table-bordered table-hover">
+          <thead>
+              <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Actions</th>
+              </tr>
+          </thead>
+          {% for product in all_products %}
+            <tr>
+              <td>{{ product.prod_name }}</td>
+              <td>{{ product.description }}</td>
+              <td>$ {{ product.price }}</td>
+              <td><a href="{%url 'show' id=product.id %}">Show</a>
+                  <a href="{%url 'edit' id=product.id %}">Edit</a>
+                  <form action="{% url 'delete' id=product.id %}" method='POST'>
+                    {% csrf_token %}
+                    <input type='submit' value='Delete Product'>
+                  </form>
+              </td>
+            </tr>
+          {% endfor %}
+      </table>
+
+      {% for message in messages %}
+        <h4 class='alert alert-{{ message.tags }}'>{{ message }}</h4>
+      {% endfor %}
+      <div id='addProduct'>
+          <a href="{%url 'newForm' %}" class="btn btn-default">Add a New Product</a>
+      </div>
+    </div>
+  </body>
+</html>
